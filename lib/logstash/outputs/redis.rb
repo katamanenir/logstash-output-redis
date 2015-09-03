@@ -168,6 +168,8 @@ class LogStash::Outputs::Redis < LogStash::Outputs::Base
         congestion_check(key)
         @redis.rpush(key, payload)
       else
+        # this will set the key with payload desired and also publish the key.
+        @redis.set(key, payload)
         @redis.publish(key, payload)
       end
     rescue => e
